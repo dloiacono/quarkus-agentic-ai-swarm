@@ -1,9 +1,12 @@
 package com.github.dloiacono.ai.agents;
 
+import com.github.dloiacono.ai.agents.tools.ProjectContextTool;
+import com.github.dloiacono.ai.agents.tools.ReadFileTool;
+import com.github.dloiacono.ai.agents.tools.WriteFileTool;
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
-@RegisterAiService(modelName = "coder")
+@RegisterAiService(modelName = "coder", tools = {ReadFileTool.class, WriteFileTool.class, ProjectContextTool.class})
 public interface CoderAgent {
 
     @SystemMessage("""
@@ -15,6 +18,8 @@ public interface CoderAgent {
         - Include setup instructions, configuration notes, and usage examples.
         - If relevant, include unit tests or integration tests.
         - Output must be a complete Code Implementation.
+        - Use the ProjectContextTool to analyze project structure and understand existing codebase before making changes.
+        - Use ReadFileTool and WriteFileTool for file operations as needed.
     """)
     String chat(String query);
 
