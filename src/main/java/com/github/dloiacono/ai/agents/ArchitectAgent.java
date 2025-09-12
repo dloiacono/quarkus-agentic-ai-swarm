@@ -1,5 +1,6 @@
 package com.github.dloiacono.ai.agents;
 
+import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
@@ -20,6 +21,7 @@ public interface ArchitectAgent {
         - Do not write implementation code.
         - Output must be a structured Architecture Specification.
     """)
-    String chat(String query);
+    @Tool("Calls the ArchitectAgent to design system architecture based on requirements and research")
+    String chatWithArchitect(String query);
 
 }

@@ -3,6 +3,7 @@ package com.github.dloiacono.ai.agents;
 import com.github.dloiacono.ai.agents.tools.ProjectContextTool;
 import com.github.dloiacono.ai.agents.tools.ReadFileTool;
 import com.github.dloiacono.ai.agents.tools.WriteFileTool;
+import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
@@ -19,13 +20,23 @@ public interface CoderAgent {
         - If relevant, include unit tests or integration tests.
         - Output must be a complete Code Implementation.
         - Use Test Driven Development (TDD) to write tests first and then implement the code.
-        - Loop until all tests passed
-        - Writes content to a file in the filesystem, creating the file if it doesn't exist or overwriting it if it does
-        - Appends content to a file in the filesystem, creating the file if it doesn't exist
-        - Analyzes a project folder and provides comprehensive context about its structure, files, and content"
-        - Use the ProjectContextTool to analyze project structure and understand existing codebase before making changes.
-        - Use ReadFileTool and WriteFileTool for file operations on produced code.
+        - Loop until all tests passed.
+        
+    CRITICAL - You MUST use the available tools to create actual files:
+        - ALWAYS use ProjectContextTool to analyze the project structure before making changes.
+        - ALWAYS use WriteFileTool to create new files or modify existing files.
+        - ALWAYS use ReadFileTool to read existing files when needed.
+        - ALWAYS send the content of the file to be created or modified to the WriteFileTool.
+        - ALWAYS use relative file paths.
+        - DO NOT just provide code snippets - you must write the actual files using WriteFileTool.
+        - Create all necessary files including source code, tests, and configuration files.
+        
+    Available Tools:
+        - ProjectContextTool: analyzeProject(projectPath) and getProjectFiles(projectPath, pattern)
+        - ReadFileTool: readFile(filePath)
+        - WriteFileTool: writeFile(filePath, content) and appendToFile(filePath, content)
     """)
-    String chat(String query);
+    @Tool("Calls the CoderAgent to implement the solution based on architecture specifications")
+    String chatWithCoder(String query);
 
 }

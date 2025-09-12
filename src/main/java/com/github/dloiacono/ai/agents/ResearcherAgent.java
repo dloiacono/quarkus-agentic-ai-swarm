@@ -1,5 +1,6 @@
 package com.github.dloiacono.ai.agents;
 
+import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
@@ -22,5 +23,6 @@ public interface ResearcherAgent {
        - Risks and mitigations
        - References
     """)
-  String chat(String query);
+  @Tool("Calls the ResearcherAgent to perform research and analysis on a given topic or requirement")
+  String chatWithResearcher(String query);
 }
