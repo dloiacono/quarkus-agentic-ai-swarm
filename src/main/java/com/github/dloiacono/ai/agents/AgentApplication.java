@@ -13,8 +13,8 @@ public class AgentApplication implements QuarkusApplication {
 
     @Override
     public int run(String... args) throws Exception {
-        System.out.println(supervisorAgent.chat("Create a REST API using Qaurkus that perform simple calculations between two numbers"));
-        Quarkus.waitForExit();
+        System.out.println(supervisorAgent.chat("Create a REST API using Quarkus that perform simple calculations between two numbers"));
+        Quarkus.asyncExit();
         return 0;
     }
 }
