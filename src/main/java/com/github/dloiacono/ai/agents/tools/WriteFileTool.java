@@ -23,7 +23,12 @@ public class WriteFileTool {
      * @param content the content to write to the file
      * @return a message indicating success or failure
      */
-    @Tool("Writes content to a file in the filesystem, creating the file if it doesn't exist or overwriting it if it does. Parameters: filePath (string) - the RELATIVE full file path, content (string) - the file content to write")
+    @Tool("""
+    Writes content to a file in the filesystem, creating the file if it doesn't exist or overwriting it if it does. 
+    Parameters: 
+    - MANDATORY filePath (string) - the RELATIVE full file path
+    - MANDATORY content (string) - the file content to write
+    """)
     public String writeFile(String filePath, String content) {
         try {
             // Debug logging and null checks
@@ -60,7 +65,12 @@ public class WriteFileTool {
      * @param content the content to append to the file
      * @return a message indicating success or failure
      */
-    @Tool("Appends content to a file in the filesystem, creating the file if it doesn't exist. Parameters: filePath (string) - the RELATIVE full file path, content (string) - the content to append")
+    @Tool("""
+    Appends content to a file in the filesystem, creating the file if it doesn't exist. 
+    Parameters: 
+     -  MANDATORY filePath (string) - the RELATIVE full file path
+     -  MANDATORY content (string) - the content to append
+    """)
     public String appendToFile(String filePath, String content) {
         try {
             // Debug logging and null checks

@@ -4,13 +4,15 @@ import com.github.dloiacono.ai.agents.tools.ProjectContextTool;
 import com.github.dloiacono.ai.agents.tools.ReadFileTool;
 import com.github.dloiacono.ai.agents.tools.WriteFileTool;
 import dev.langchain4j.agent.tool.Tool;
-import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 @RegisterAiService(modelName = "coder", tools = {ReadFileTool.class, WriteFileTool.class, ProjectContextTool.class})
 public interface CoderAgent {
 
-    @SystemMessage("""
+    @UserMessage("""
     Goal: Implement the designed solution.
     Instructions:
         - Use the user’s request + Architecture Specification as input. 
@@ -35,6 +37,8 @@ public interface CoderAgent {
         - ProjectContextTool: analyzeProject(projectPath) and getProjectFiles(projectPath, pattern)
         - ReadFileTool: readFile(filePath)
         - WriteFileTool: writeFile(filePath, content) and appendToFile(filePath, content)
+        
+    Here is the question: {query}
     """)
     @Tool("Calls the CoderAgent to implement the solution based on architecture specifications")
     String chatWithCoder(String query);

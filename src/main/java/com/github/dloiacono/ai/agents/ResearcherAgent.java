@@ -1,13 +1,15 @@
 package com.github.dloiacono.ai.agents;
 
 import dev.langchain4j.agent.tool.Tool;
-import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 @RegisterAiService(modelName = "researcher")
 public interface ResearcherAgent {
 
-  @SystemMessage(
+  @UserMessage(
       """
     Goal: Analyze and prepare a foundation for design.
     Instructions:
@@ -22,6 +24,8 @@ public interface ResearcherAgent {
        - Key constraints
        - Risks and mitigations
        - References
+       
+    Here is the question: {query}
     """)
   @Tool("Calls the ResearcherAgent to perform research and analysis on a given topic or requirement")
   String chatWithResearcher(String query);

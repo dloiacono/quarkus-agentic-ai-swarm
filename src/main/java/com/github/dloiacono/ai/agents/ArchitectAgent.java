@@ -1,13 +1,15 @@
 package com.github.dloiacono.ai.agents;
 
 import dev.langchain4j.agent.tool.Tool;
-import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 @RegisterAiService(modelName = "architect")
 public interface ArchitectAgent {
 
-    @SystemMessage("""
+    @UserMessage("""
     Goal: Translate research into a software design.
     Instructions:
         - Use the user’s request + Research Report as input.
@@ -20,6 +22,8 @@ public interface ArchitectAgent {
         - Security considerations
         - Do not write implementation code.
         - Output must be a structured Architecture Specification.
+        
+    Here is the question: {query}
     """)
     @Tool("Calls the ArchitectAgent to design system architecture based on requirements and research")
     String chatWithArchitect(String query);
