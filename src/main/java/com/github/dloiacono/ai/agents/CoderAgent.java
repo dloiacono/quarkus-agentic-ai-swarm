@@ -4,15 +4,16 @@ import com.github.dloiacono.ai.agents.tools.ProjectContextTool;
 import com.github.dloiacono.ai.agents.tools.ReadFileTool;
 import com.github.dloiacono.ai.agents.tools.WriteFileTool;
 import dev.langchain4j.agent.tool.Tool;
+import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import jakarta.enterprise.context.ApplicationScoped;
 
-@ApplicationScoped
 @RegisterAiService(modelName = "coder", tools = {ReadFileTool.class, WriteFileTool.class, ProjectContextTool.class})
 public interface CoderAgent {
 
-    @UserMessage("""
+    @SystemMessage("""
     Goal: Implement the designed solution.
     Instructions:
         - Use the user’s request + Architecture Specification as input. 
@@ -24,7 +25,8 @@ public interface CoderAgent {
         - Use Test Driven Development (TDD) to write tests first and then implement the code.
         - Loop until all tests passed.
         
-    CRITICAL - You MUST use the available tools to create actual files:
+    CRITICAL:
+        - You MUST use the available tools to create actual files:
         - ALWAYS use ProjectContextTool to analyze the project structure before making changes.
         - ALWAYS use WriteFileTool to create new files or modify existing files.
         - ALWAYS use ReadFileTool to read existing files when needed.
@@ -36,7 +38,8 @@ public interface CoderAgent {
     Available Tools:
         - ProjectContextTool: analyzeProject(projectPath) and getProjectFiles(projectPath, pattern)
         - ReadFileTool: readFile(filePath)
-        - WriteFileTool: writeFile(filePath, content) and appendToFile(filePath, content)
+        - WriteFileTool: writeFile(filePath, content) and appendToFile(filePath, content). 
+    Content of the file must always be passed to the write tool 
         
     Here is the question: {query}
     """)

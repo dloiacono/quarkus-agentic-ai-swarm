@@ -1,9 +1,10 @@
 package com.github.dloiacono.ai.agents;
 
+import com.github.dloiacono.ai.agents.tools.AgentOrchestrator;
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
-@RegisterAiService(tools = {ResearcherAgent.class, ArchitectAgent.class, CoderAgent.class}, modelName = "supervisor")
+@RegisterAiService(tools = {AgentOrchestrator.class}, modelName = "supervisor")
 public interface SupervisorAgent {
 
   @SystemMessage(
@@ -18,18 +19,14 @@ public interface SupervisorAgent {
     
     CRITICAL INSTRUCTIONS:
     - ALWAYS follow the sequence: Research → Architecture → Implementation
-    - ALWAYS use the ResearcherAgent tools to call the researcher agents
-    - ALWAYS use the ArchitectAgent tools to call the architect agents
-    - ALWAYS use the CoderAgent tools to call the coder agents
+    - ALWAYS use callResearcher() tool to call the researcher agent
+    - ALWAYS use callArchitect() tool to call the architect agent
+    - ALWAYS use callCoder() tool to call the coder agent
     - Pass the output from each phase as input to the next phase
     - Ensure the CoderAgent receives clear architecture specifications
     - Validate that files are actually created by the CoderAgent
     - Do not skip any phase or agent
     
-    Available Agents:
-    - ResearcherAgent: Research requirements and technologies
-    - ArchitectAgent: Design system architecture based on research
-    - CoderAgent: Implement the solution and create files
     
     Your final response should summarize what was accomplished in each phase and confirm that files were created.
     """)
