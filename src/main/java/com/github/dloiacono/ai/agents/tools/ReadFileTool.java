@@ -37,4 +37,24 @@ public class ReadFileTool {
             return "Error reading file: " + e.getMessage();
         }
     }
+
+    /**
+     * Checks if a file exists at the specified path.
+     *
+     * @param filePath the path to the file to check
+     * @return "true" if the file exists, "false" if it doesn't exist
+     */
+    @Tool("Checks if a file exists at the specified path without reading its content")
+    public String fileExists(
+        @P("MANDATORY filePath (string) - the RELATIVE full file path to check") String filePath) {
+        try {
+            if (filePath == null || filePath.trim().isEmpty()) {
+                return "false";
+            }
+            Path path = Paths.get(filePath);
+            return Files.exists(path) ? "true" : "false";
+        } catch (Exception e) {
+            return "false";
+        }
+    }
 }

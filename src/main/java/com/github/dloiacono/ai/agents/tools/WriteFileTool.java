@@ -20,17 +20,26 @@ public class WriteFileTool {
      * Writes the provided content to a file at the specified path.
      * Creates the file if it doesn't exist, or overwrites it if it does.
      *
-     * @param filePath the path to the file to write
      * @param content the content to write to the file
+     * @param filePath the path to the file to write
      * @return a message indicating success or failure
      */
     @Tool("""
     Writes content to a file in the filesystem, 
-    creating the file if it doesn't exist or overwriting it if it does. 
+    creating the file if it doesn't exist or overwriting it if it does.
+    
+    CRITICAL: BOTH parameters are MANDATORY and must never be null!
+    - First parameter: content (the ACTUAL file content to write)
+    - Second parameter: filePath (the file path)
+    
+    You MUST provide the complete file content as the first parameter.
+    Do NOT call this tool without providing actual content to write.
+    
+    Example: writeFile("package com.example;\n\npublic class Example {\n    // code here\n}", "src/main/java/Example.java")
     """)
     public String writeFile(
-            @P("MANDATORY filePath (string) - the RELATIVE full file path") String filePath,
-            @P("MANDATORY content (string) - the file content to write") String content) {
+            @P("MANDATORY content (string) - the ACTUAL file content to write - CANNOT be null - MUST contain the complete file content") String content,
+            @P("MANDATORY filePath (string) - the RELATIVE full file path - CANNOT be null or empty") String filePath) {
         try {
             // Debug logging and null checks
             if (filePath == null || filePath.trim().isEmpty()) {
@@ -38,6 +47,9 @@ public class WriteFileTool {
             }
             if (content == null) {
                 return "Error: content parameter is null. Please provide the actual file content to write.";
+            }
+            if (content.trim().isEmpty()) {
+                return "Error: content parameter is empty. Please provide the actual file content to write - do not pass empty strings.";
             }
             
             // Convert to relative path if absolute path is provided
@@ -62,16 +74,22 @@ public class WriteFileTool {
      * Appends the provided content to a file at the specified path.
      * Creates the file if it doesn't exist.
      *
-     * @param filePath the path to the file to append to
      * @param content the content to append to the file
+     * @param filePath the path to the file to append to
      * @return a message indicating success or failure
      */
     @Tool("""
-    Appends content to a file in the filesystem, creating the file if it doesn't exist. 
+    Appends content to a file in the filesystem, creating the file if it doesn't exist.
+    
+    CRITICAL: BOTH parameters are MANDATORY and must never be null!
+    - First parameter: content (the ACTUAL content to append)
+    - Second parameter: filePath (the file path)
+    
+    Example: appendToFile("Some text to append\n", "src/main/java/Example.java")
     """)
     public String appendToFile(
-            @P("MANDATORY filePath (string) - the RELATIVE full file path") String filePath,
-            @P("MANDATORY content (string) - the content to append") String content) {
+            @P("MANDATORY content (string) - the ACTUAL content to append - CANNOT be null - MUST contain the actual content") String content,
+            @P("MANDATORY filePath (string) - the RELATIVE full file path - CANNOT be null or empty") String filePath) {
         try {
             // Debug logging and null checks
             if (filePath == null || filePath.trim().isEmpty()) {
@@ -115,6 +133,6 @@ public class WriteFileTool {
             return filePath;
         }
 
-        return System.getProperty("user.dir") + '/' + filePath;
+        return System.getProperty("user.dir") + "/target/run-test/" + filePath;
     }
 }
