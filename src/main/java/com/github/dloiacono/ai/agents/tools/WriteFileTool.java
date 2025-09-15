@@ -1,5 +1,6 @@
 package com.github.dloiacono.ai.agents.tools;
 
+import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -24,12 +25,12 @@ public class WriteFileTool {
      * @return a message indicating success or failure
      */
     @Tool("""
-    Writes content to a file in the filesystem, creating the file if it doesn't exist or overwriting it if it does. 
-    Parameters: 
-    - MANDATORY filePath (string) - the RELATIVE full file path
-    - MANDATORY content (string) - the file content to write
+    Writes content to a file in the filesystem, 
+    creating the file if it doesn't exist or overwriting it if it does. 
     """)
-    public String writeFile(String filePath, String content) {
+    public String writeFile(
+            @P("MANDATORY filePath (string) - the RELATIVE full file path") String filePath,
+            @P("MANDATORY content (string) - the file content to write") String content) {
         try {
             // Debug logging and null checks
             if (filePath == null || filePath.trim().isEmpty()) {
@@ -67,11 +68,10 @@ public class WriteFileTool {
      */
     @Tool("""
     Appends content to a file in the filesystem, creating the file if it doesn't exist. 
-    Parameters: 
-     -  MANDATORY filePath (string) - the RELATIVE full file path
-     -  MANDATORY content (string) - the content to append
     """)
-    public String appendToFile(String filePath, String content) {
+    public String appendToFile(
+            @P("MANDATORY filePath (string) - the RELATIVE full file path") String filePath,
+            @P("MANDATORY content (string) - the content to append") String content) {
         try {
             // Debug logging and null checks
             if (filePath == null || filePath.trim().isEmpty()) {

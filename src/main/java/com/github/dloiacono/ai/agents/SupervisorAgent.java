@@ -26,10 +26,10 @@ public interface SupervisorAgent {
     - Validate that files are actually created by the CoderAgent
     - Do not skip any phase or agent
     
-    Available Tools:
-    - ResearcherAgent.chat(query): Research requirements and technologies
-    - ArchitectAgent.chat(query): Design system architecture based on research
-    - CoderAgent.chat(query): Implement the solution and create files
+    Available Agents:
+    - ResearcherAgent: Research requirements and technologies
+    - ArchitectAgent: Design system architecture based on research
+    - CoderAgent: Implement the solution and create files
     
     Your final response should summarize what was accomplished in each phase and confirm that files were created.
     """)

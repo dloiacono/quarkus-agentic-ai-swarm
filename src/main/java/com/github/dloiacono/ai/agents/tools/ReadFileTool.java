@@ -1,5 +1,6 @@
 package com.github.dloiacono.ai.agents.tools;
 
+import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -14,14 +15,15 @@ import java.nio.file.Paths;
 @ApplicationScoped
 public class ReadFileTool {
 
-    /**
-     * Reads the content of a file at the specified path.
-     *
-     * @param filePath the path to the file to read
-     * @return the content of the file as a string
-     */
-    @Tool("Reads a file from the filesystem and returns its content as a string")
-    public String readFile(String filePath) {
+  /**
+   * Reads the content of a file at the specified path.
+   *
+   * @param filePath the path to the file to read
+   * @return the content of the file as a string
+   */
+  @Tool("Reads a file from the filesystem and returns its content as a string")
+  public String readFile(
+      @P("MANDATORY filePath (string) - the RELATIVE full file path") String filePath) {
         try {
             Path path = Paths.get(filePath);
             if (!Files.exists(path)) {

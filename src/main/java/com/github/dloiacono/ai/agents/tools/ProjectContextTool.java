@@ -1,5 +1,6 @@
 package com.github.dloiacono.ai.agents.tools;
 
+import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -34,7 +35,8 @@ public class ProjectContextTool {
      * @return a detailed analysis of the project structure
      */
     @Tool("Analyzes a project folder and provides comprehensive context about its structure, files, and content")
-    public String analyzeProject(String projectPath) {
+    public String analyzeProject(
+            @P("MANDATORY projectPath (string) - the RELATIVE full project path") String projectPath) {
         try {
             Path path = Paths.get(projectPath);
             if (!Files.exists(path) || !Files.isDirectory(path)) {
