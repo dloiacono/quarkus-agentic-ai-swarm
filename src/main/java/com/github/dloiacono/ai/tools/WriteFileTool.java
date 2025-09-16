@@ -1,4 +1,4 @@
-package com.github.dloiacono.ai.agents.tools;
+package com.github.dloiacono.ai.tools;
 
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;

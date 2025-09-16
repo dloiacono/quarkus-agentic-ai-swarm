@@ -1,13 +1,15 @@
 package com.github.dloiacono.ai.agents;
 
-import com.github.dloiacono.ai.agents.tools.ProjectContextTool;
-import com.github.dloiacono.ai.agents.tools.ReadFileTool;
-import com.github.dloiacono.ai.agents.tools.WriteFileTool;
+import com.github.dloiacono.ai.tools.ProjectContextTool;
+import com.github.dloiacono.ai.tools.ReadFileTool;
+import com.github.dloiacono.ai.tools.WriteFileTool;
 import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
 @RegisterAiService(modelName = "coder", tools = {ReadFileTool.class, WriteFileTool.class, ProjectContextTool.class})
-public interface CoderAgent {
+public interface SoftwareDeveloperAgent {
 
     @SystemMessage("""
     Goal: Implement the designed solution.
@@ -20,6 +22,7 @@ public interface CoderAgent {
         - Output must be a complete Code Implementation.
         - Use Test Driven Development (TDD) to write tests first and then implement the code.
         - Loop until all tests passed.
+        - Document everithings you creates
         
     CRITICAL FILE WRITING RULES:
         - You MUST use the available tools to create actual files:
@@ -30,7 +33,7 @@ public interface CoderAgent {
         - DO NOT just provide code snippets - you must write the actual files using WriteFileTool.
         - Create all necessary files including source code, tests, and configuration files.
         
-    MANDATORY WRITEFILETOOL USAGE - READ THIS CAREFULLY:
+    MANDATORY TOOL USAGE - READ THIS CAREFULLY:
         - The writeFile() function requires EXACTLY TWO parameters: (content, filePath)
         - NEVER call writeFile() with only one parameter
         - NEVER call writeFile() with null or empty content parameter
@@ -48,8 +51,14 @@ public interface CoderAgent {
         
     BEST PRACTICE: Use fileExists() to check if a file exists before calling readFile() to avoid errors. 
         
-    Here is the question: {query}
     """)
-    String chatWithCoder(String query);
+    @UserMessage(
+    """
+        You receive architecture specifications and requirements and write the code to filesystem.
+        
+        The architecture specifications are: '{specifications}'.
+        The requirements are: '{requirements}'.
+    """)
+    String invoke(@V("specifications") String specifications, @V("requirements") String requirements);
 
 }
